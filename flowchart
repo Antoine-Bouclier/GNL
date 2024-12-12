@@ -1,0 +1,19 @@
+flowchart TD
+    Début([Début]) --> VérifierFD{{"FD < 0 ou BUFFER_SIZE <= 0 ?"}}
+    VérifierFD -- Oui --> Erreur1(["Retourner NULL"])
+    VérifierFD -- Non --> AllouerBuffer["Allouer mémoire pour le buffer"]
+    AllouerBuffer --> VérifierAllocation{{"Allocation réussie ?"}}
+    VérifierAllocation -- Non --> Erreur2(["Retourner NULL"])
+    VérifierAllocation -- Oui --> BoucleLecture["Lire données du FD dans le buffer"]
+    
+    BoucleLecture --> VérifierLecture{{"Lecture réussie ?"}}
+    VérifierLecture -- Non --> LibérerBuffer(["Libérer mémoire du buffer"]) --> Fin(["Retourner NULL"])
+    VérifierLecture -- Oui --> TraiterBuffer["Traiter buffer : extraire ligne et stocker reste"]
+    
+    TraiterBuffer --> VérifierLigne{{"Ligne contient '\\n' ?"}}
+    VérifierLigne -- Oui --> ExtraireLigne["Extraire ligne et mettre à jour reste statique"]
+    ExtraireLigne --> LibérerBuffer2["Libérer mémoire du buffer"]
+    LibérerBuffer2 --> Fin2(["Retourner ligne"])
+    
+    VérifierLigne -- Non --> AjouterLigne["Ajouter buffer à la ligne courante"]
+    AjouterLigne --> BoucleLecture
