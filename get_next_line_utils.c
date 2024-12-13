@@ -6,94 +6,105 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:12 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/12 15:42:02 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:37:31 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	count_char(char const *s)
+char    *ft_strjoin(char const *s1, char const *s2)
 {
-	int	count;
+    char    *str;
+    char    *res;
 
-	count = 0;
-	while (*s != '\n' && *s != '\0')
-	{
-		count++;
-		s++;
-	}
-	return (count);
+    if (!s1)
+        return ((char *)s2);
+    if (!s2)
+        return ((char *)s1);
+    str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+    if (!str)
+        return (NULL);
+    res = str;
+    while (*s1)
+        *str++ = *s1++;
+    while (*s2)
+        *str++ = *s2++;
+    *str = '\0';
+    return (res);
 }
 
-static char	*fill_line(const char *str, int start, int end)
+char	*ft_strchr(const char *s)
 {
-	char	*line;
 	int		i;
 
 	i = 0;
-	line = malloc((end - start + 1) * sizeof(char));
-	if (!line)
-		return (NULL);
-	while (start <= end)
+	while (s[i])
 	{
-		line[i] = str[start];
-		i++;
-		start++;
-	}
-	return (line);
-}
-
-static void	*ft_free(char **str, int count)
-{
-	int	i;
- 
-	i = 0;
-	while (i < count)
-	{
-		free(str[i]);
+		if (s[i] == '\n')
+			return ((char *) &s[i]);
 		i++;
 	}
-	free(str);
+	if (s[i] == '\n')
+		return ((char *) &s[i]);
 	return (NULL);
 }
 
-char	**ft_split(char const *s)
+char	*ft_strdup(const char *s)
 {
-	char	**str;
 	int		i;
-	int		start;
-	int		end;
+	char	*dest;
 
-	i = 0;
-	start = 0;
-	str = malloc(3 * sizeof(char *));
-	if (!str)
-		return (NULL);
-	while (i < 2)
+	dest = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (dest == 0)
 	{
-		if (start == 0)
-			end = start + count_char(s + start);
-		else
-			end = start + strlen(s + start);
-		str[i] = fill_line(s, start, end);
-		if (s[end] == '\n')
-			end++;
-		start = end;
-		if (!(str[i]))
-			return (ft_free(str, i));
+		return (0);
+	}
+	i = 0;
+	while (s[i] != '\0')
+	{
+		dest[i] = s[i];
 		i++;
 	}
-	return (str);
+	dest[i] = '\0';
+	return (dest);
 }
 
-// #include <stdio.h>
-// int main (void)
-// {
-// 	char	*str;
-// 	char	**tab;
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
 
-// 	str = "salut comment tu vas ? bien et toi ?";
-// 	tab = ft_split(str);
-// 	printf("%s", tab[0]);
-// 	printf("%s", tab[1]);
-// }
+	i = 0;
+	while (s[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strccpy(char *line)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (line[i] && line[i] != '\n')
+		i++;
+	if (line[i] == '\n')
+		i++;
+	tmp = malloc(sizeof(char) * i + 1);
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (line[i] && line[i] != '\n')
+	{
+		tmp[i] = line[i];
+		i++;
+		if (line[i] == '\n')
+			{
+				tmp[i] = line[i];
+			}
+	}
+	i++;
+	tmp[i] = '\0';
+	return (tmp);
+}
