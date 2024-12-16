@@ -6,7 +6,7 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:12 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/13 14:37:31 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:14:07 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ char	*ft_strchr(const char *s)
 	while (s[i])
 	{
 		if (s[i] == '\n')
-			return ((char *) &s[i]);
+			return ((char *) &s[i + 1]);
 		i++;
 	}
 	if (s[i] == '\n')
-		return ((char *) &s[i]);
+		return ((char *) &s[i + 1]);
 	return (NULL);
 }
 
@@ -55,10 +55,8 @@ char	*ft_strdup(const char *s)
 	char	*dest;
 
 	dest = (char *)malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (dest == 0)
-	{
-		return (0);
-	}
+	if (!dest)
+		return (NULL);
 	i = 0;
 	while (s[i] != '\0')
 	{
@@ -99,12 +97,13 @@ char	*ft_strccpy(char *line)
 	{
 		tmp[i] = line[i];
 		i++;
-		if (line[i] == '\n')
-			{
-				tmp[i] = line[i];
-			}
 	}
-	i++;
+	if (line[i] == '\n')
+		{
+			tmp[i] = line[i];
+			i++;
+		}
 	tmp[i] = '\0';
 	return (tmp);
 }
+

@@ -6,7 +6,7 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:06 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/13 15:17:35 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:08:47 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,27 @@ char	*get_next_line(int fd)
     }
     line = fill_line(fd, nextl, buffer);
     nextl = line;
+    free(buffer);
     if (!line)
         return (NULL);
-    free(buffer);
     line = ft_strccpy(line);
-    nextl = ft_strchr(nextl) + 1;
-    printf("\033[31mtest line : %s\033[0m", line);
+    nextl = ft_strchr(nextl);
     return (line);
 }
 
 static char *fill_line(int fd, char *nextl, char *buffer)
 {
     ssize_t     b_read;
+    char        *tmp;
 
     while ((b_read = read(fd, buffer, BUFFER_SIZE)) > 0)
     {
-        printf("\033[32mb_read : %d\033[0m\n", b_read); 
         buffer[b_read] = '\0';
         if (!nextl)
             nextl = ft_strdup("");
-        nextl = ft_strjoin(nextl, buffer);
+        tmp = nextl;
+        nextl = ft_strjoin(tmp, buffer);
+        free(tmp);
         if (ft_strchr(buffer))
             break;
     }
