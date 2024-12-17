@@ -6,18 +6,20 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:06 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/16 15:08:47 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:57:20 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 static char *fill_line(int fd, char *nextl, char *buffer);
+static char    *set_nextl(char *nextl);
 
 char	*get_next_line(int fd)
 {
 	static char     *nextl;
     char            *line;
     char            *buffer;
+    char            *tmp;
 
     buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
     if (!buffer)
@@ -29,12 +31,12 @@ char	*get_next_line(int fd)
         return (NULL);
     }
     line = fill_line(fd, nextl, buffer);
-    nextl = line;
-    free(buffer);
     if (!line)
         return (NULL);
+    free(buffer);
+    nextl = line;
     line = ft_strccpy(line);
-    nextl = ft_strchr(nextl);
+    nextl = set_nextl(nextl);
     return (line);
 }
 
@@ -58,6 +60,23 @@ static char *fill_line(int fd, char *nextl, char *buffer)
     {
         free(nextl);
         return (NULL);
+    }
+    return (nextl);
+}
+static char    *set_nextl(char *nextl)
+{
+    char    *tmp;
+
+    if (ft_strchr(nextl))
+    {
+        tmp = ft_strdup(ft_strchr(nextl));
+        free(nextl);
+        nextl = tmp;
+    }
+    else
+    {
+        free(nextl);
+        nextl = NULL;
     }
     return (nextl);
 }

@@ -6,7 +6,7 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:12 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/16 14:14:07 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:22:10 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,3 @@ char	*ft_strccpy(char *line)
 	tmp[i] = '\0';
 	return (tmp);
 }
-

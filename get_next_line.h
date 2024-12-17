@@ -6,7 +6,7 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:07:57 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/13 13:58:44 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/17 11:13:56 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ char	*ft_strchr(const char *s);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s);
 char	*ft_strccpy(char *line);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 #endif
