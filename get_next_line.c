@@ -6,77 +6,71 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:06 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/17 12:57:20 by abouclie         ###   ########.fr       */
+/*   Updated: 2024/12/18 18:22:58 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-static char *fill_line(int fd, char *nextl, char *buffer);
-static char    *set_nextl(char *nextl);
+static void    set_nextl(char *nextl);
+static ssize_t check_line(char *line);
 
 char	*get_next_line(int fd)
 {
-	static char     *nextl;
+	static char     nextl[BUFFER_SIZE + 1];
     char            *line;
-    char            *buffer;
-    char            *tmp;
+    ssize_t         b_read;
 
-    buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-    if (!buffer)
-        return (NULL);
+    b_read = 1;
     if (fd < 0 || BUFFER_SIZE <= 0)
-    {
-        free(nextl);
-        free(buffer);
         return (NULL);
-    }
-    line = fill_line(fd, nextl, buffer);
+    line = ft_strdup(nextl);
     if (!line)
         return (NULL);
-    free(buffer);
-    nextl = line;
+    while (b_read && check_line(line) == -1)
+    {
+        b_read = read(fd, nextl, BUFFER_SIZE);
+        if (b_read == -1)
+            return (free(line), NULL);
+        line = ft_strjoin(line, nextl);
+        if (ft_strchr(nextl))
+            break ;
+    }
     line = ft_strccpy(line);
-    nextl = set_nextl(nextl);
+    // printf("Avant set_nextl : %s", nextl);
+    set_nextl(nextl);
+    // printf("Apres set_nextl : %s", nextl);
     return (line);
 }
 
-static char *fill_line(int fd, char *nextl, char *buffer)
+static void    set_nextl(char *nextl)
 {
-    ssize_t     b_read;
-    char        *tmp;
+    size_t  i;
+    size_t  j;
 
-    while ((b_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+    i = 0;
+    j = 0;
+    while (nextl[i] && nextl[i] != '\n')
+        i++;
+    if (nextl[i] == '\n')
+        i++;
+    while (nextl[i + j])
     {
-        buffer[b_read] = '\0';
-        if (!nextl)
-            nextl = ft_strdup("");
-        tmp = nextl;
-        nextl = ft_strjoin(tmp, buffer);
-        free(tmp);
-        if (ft_strchr(buffer))
-            break;
+        nextl[j] = nextl[i + j];
+        j++;
     }
-    if (b_read == -1)
-    {
-        free(nextl);
-        return (NULL);
-    }
-    return (nextl);
+    nextl[j] = '\0';
 }
-static char    *set_nextl(char *nextl)
-{
-    char    *tmp;
 
-    if (ft_strchr(nextl))
+static ssize_t check_line(char *line)
+{
+    ssize_t i;
+
+    i = 0;
+    while (line[i])
     {
-        tmp = ft_strdup(ft_strchr(nextl));
-        free(nextl);
-        nextl = tmp;
+        if (line[i] == '\n')
+            return (1);
+        i++;
     }
-    else
-    {
-        free(nextl);
-        nextl = NULL;
-    }
-    return (nextl);
+    return (-1);
 }

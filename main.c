@@ -14,16 +14,16 @@ int main(void)
         return (1);
     }
 
-    line = get_next_line(fd);
-    printf("resultat : %s", line);
-    free(line);
+    // line = get_next_line(fd);
+    // printf("resultat : %s", line);
+    // free(line);
 
 
-    // while ((line = get_next_line(fd)))
-    // {
-    //     printf("resultat : %s", line);
-    //     free(line);
-    // }
+    while ((line = get_next_line(fd)))
+    {
+        printf("resultat : %s", line);
+        free(line);
+    }
     close(fd);
     return (0);
 }
