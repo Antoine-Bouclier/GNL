@@ -15,13 +15,13 @@ int main(void)
     }
 
     // line = get_next_line(fd);
-    // printf("resultat : %s", line);
+    // printf("%s", line);
     // free(line);
 
 
     while ((line = get_next_line(fd)))
     {
-        printf("resultat : %s", line);
+        printf("%s", line);
         free(line);
     }
     close(fd);
