@@ -6,47 +6,36 @@
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:08:12 by abouclie          #+#    #+#             */
-/*   Updated: 2024/12/17 13:17:36 by abouclie         ###   ########.fr       */
+/*   Updated: 2025/01/08 10:47:33 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char    *ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2, ssize_t b_read)
 {
-    char    *str;
-    char    *res;
-
-    if (!s1)
-        return ((char *)s2);
-    if (!s2)
-        return ((char *)s1);
-    str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-    if (!str)
-        return (NULL);
-    res = str;
-    while (*s1)
-        *str++ = *s1++;
-    while (*s2)
-        *str++ = *s2++;
-    *str = '\0';
-    return (res);
-}
-
-char	*ft_strchr(const char *s)
-{
-	int		i;
+	char	*str;
+	char	*res;
+	ssize_t	i;
 
 	i = 0;
-	while (s[i])
+	if (!s1)
+		return ((char *)s2);
+	if (!s2)
+		return ((char *)s1);
+	str = malloc(ft_strlen(s1) + b_read + 1);
+	if (!str)
+		return (free(str), NULL);
+	res = str;
+	while (*s1)
+		*str++ = *s1++;
+	while (*s2 && i < b_read)
 	{
-		if (s[i] == '\n')
-			return ((char *) &s[i + 1]);
+		*str++ = *s2++;
 		i++;
 	}
-	if (s[i] == '\n')
-		return ((char *) &s[i + 1]);
-	return (NULL);
+	*str = '\0';
+	return (res);
 }
 
 char	*ft_strdup(const char *s)
@@ -99,10 +88,21 @@ char	*ft_strccpy(char *line)
 		i++;
 	}
 	if (line[i] == '\n')
-		{
-			tmp[i] = line[i];
-			i++;
-		}
+	{
+		tmp[i] = line[i];
+		i++;
+	}
 	tmp[i] = '\0';
 	return (tmp);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*dest;
+	size_t			i;
+
+	dest = s;
+	i = 0;
+	while (i++ < n)
+		*dest++ = 0;
 }
