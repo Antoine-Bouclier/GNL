@@ -15,15 +15,20 @@ int main(void)
     }
 
     // line = get_next_line(fd);
-    // printf("%s", line);
+    // printf("resultat : %s", line);
     // free(line);
 
 
-    while ((line = get_next_line(fd)))
-    {
-        printf("%s", line);
-        free(line);
-    }
+    printf("resultat : %s", get_next_line(fd));
+    printf("resultat : %s", get_next_line(fd));
+    printf("resultat : %s", get_next_line(fd));
+    free(line);
+
+    // while ((line = get_next_line(fd)))
+    // {
+    //     printf("%s", line);
+    //     free(line);
+    // }
     close(fd);
     return (0);
 }
