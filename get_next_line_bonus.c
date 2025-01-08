@@ -1,41 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abouclie <abouclie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 13:08:06 by abouclie          #+#    #+#             */
-/*   Updated: 2025/01/08 18:14:35 by abouclie         ###   ########.fr       */
+/*   Created: 2025/01/08 11:37:28 by abouclie          #+#    #+#             */
+/*   Updated: 2025/01/08 18:12:44 by abouclie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-static void		set_nextl(char *nextl);
-static ssize_t	check_line(char *line);
-static char		*fill_line(char *line, char *nextl, int fd);
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
-	static char	nextl[BUFFER_SIZE + 1] = "\0";
+	static char	nextl[MAX_FD][BUFFER_SIZE + 1];
 	char		*line;
 	char		*result;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = ft_strdup(nextl);
+	line = ft_strdup(nextl[fd]);
 	if (!line)
 		return (free(line), NULL);
-	line = fill_line(line, nextl, fd);
+	line = fill_line(line, nextl[fd], fd);
 	if (line == NULL)
 		return (NULL);
-	set_nextl(nextl);
+	set_nextl(nextl[fd]);
 	result = ft_strccpy(line);
 	return (free(line), result);
 }
 
-static void	set_nextl(char *nextl)
+void	set_nextl(char *nextl)
 {
 	size_t	i;
 	size_t	j;
@@ -58,7 +54,7 @@ static void	set_nextl(char *nextl)
 	}
 }
 
-static ssize_t	check_line(char *line)
+ssize_t	check_line(char *line)
 {
 	ssize_t	i;
 
@@ -74,7 +70,7 @@ static ssize_t	check_line(char *line)
 	return (-1);
 }
 
-static char	*fill_line(char *line, char *nextl, int fd)
+char	*fill_line(char *line, char *nextl, int fd)
 {
 	char	*tmp;
 	ssize_t	b_read;
